@@ -16,6 +16,8 @@ buildscript {
     }
 }
 
+project.version = "0.0.1"
+
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
