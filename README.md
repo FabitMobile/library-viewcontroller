@@ -2,7 +2,7 @@
 
 ---
 
-##UDF - Unidirectional Data Flow
+## UDF - Unidirectional Data Flow
 
 ViewController - класс обеспечивающий взаимодействие View и Store,
 также хранит ссылку на Store
@@ -45,7 +45,7 @@ interface StateView<State> {
 
 ___
 
-###Пример использования вместе с [Dagger Hilt](https://github.com/google/dagger)
+### Пример использования вместе с [Dagger Hilt](https://github.com/google/dagger)
 
 - Создаем Store, State, Action
 - Создаем модуль для Store
