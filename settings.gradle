@@ -14,5 +14,5 @@ dependencyResolutionManagement {
         maven { url "https://jitpack.io" }
     }
 }
-rootProject.name = "library-viewcontroller"
+rootProject.name = "viewcontroller"
 include ':library-viewcontroller'
