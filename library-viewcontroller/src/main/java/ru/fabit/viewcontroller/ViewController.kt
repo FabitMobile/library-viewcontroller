@@ -3,10 +3,10 @@ package ru.fabit.viewcontroller
 import androidx.lifecycle.*
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import ru.fabit.storecoroutines.BaseStore
+import ru.fabit.storecoroutines.Store
 
 abstract class ViewController<State, Action, View : StateView<State>>(
-    protected val store: BaseStore<State, Action>
+    protected val store: Store<State, Action>
 ) : ViewModel(), LifecycleEventObserver {
     private var isFirstAttach = true
     protected var isAttach = false
