@@ -6,7 +6,8 @@ import kotlinx.coroutines.launch
 import ru.fabit.storecoroutines.Store
 
 abstract class ViewController<State, Action, View : StateView<State>>(
-    protected val store: Store<State, Action>
+    protected val store: Store<State, Action>,
+    private val savedStateHandle: SavedStateHandle? = null
 ) : ViewModel(), LifecycleEventObserver {
     private var isFirstAttach = true
     protected var isAttach = false
@@ -18,6 +19,12 @@ abstract class ViewController<State, Action, View : StateView<State>>(
     protected fun attach() {}
 
     protected fun firstViewAttach() {}
+
+    fun setArguments(mapArgument: Map<String, Any?>) {
+        mapArgument.forEach {entry ->
+            savedStateHandle?.set(entry.key, entry.value)
+        }
+    }
 
     protected fun dispatchAction(action: Action) {
         store.dispatchAction(action)
