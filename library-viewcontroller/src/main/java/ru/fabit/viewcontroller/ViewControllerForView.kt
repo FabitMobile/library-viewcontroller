@@ -1,14 +1,16 @@
 package ru.fabit.viewcontroller
 
-import androidx.lifecycle.*
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import ru.fabit.storecoroutines.Store
 
-abstract class ViewController<State, Action, View : StateView<State>>(
-    protected val store: Store<State, Action>,
-    private val savedStateHandle: SavedStateHandle? = null
-) : ViewModel(), LifecycleEventObserver {
+abstract class ViewControllerForView<State, Action, View : StateView<State>>(
+    protected val store: Store<State, Action>
+) : LifecycleEventObserver {
     private var isFirstAttach = true
     protected var isAttach = false
 
@@ -20,13 +22,9 @@ abstract class ViewController<State, Action, View : StateView<State>>(
 
     protected open fun onPause() {}
 
-    protected open fun firstViewAttach() {}
+    protected open fun onDestroy() {}
 
-    fun setArguments(mapArgument: Map<String, Any?>) {
-        mapArgument.forEach {entry ->
-            savedStateHandle?.set(entry.key, entry.value)
-        }
-    }
+    protected open fun firstViewAttach() {}
 
     protected fun dispatchAction(action: Action) {
         store.dispatchAction(action)
@@ -38,7 +36,7 @@ abstract class ViewController<State, Action, View : StateView<State>>(
             Lifecycle.Event.ON_RESUME -> {
                 isAttach = true
                 view = source as View
-                subscription = viewModelScope.launch {
+                subscription = source.lifecycleScope.launch {
                     store.state.collect {
                         view?.renderState(it)
                     }
@@ -54,11 +52,11 @@ abstract class ViewController<State, Action, View : StateView<State>>(
                 isAttach = false
                 subscription?.cancel()
             }
+            Lifecycle.Event.ON_DESTROY -> {
+                onDestroy()
+                store.dispose()
+            }
             else -> {}
         }
-    }
-
-    override fun onCleared() {
-        store.dispose()
     }
 }
