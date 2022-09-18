@@ -16,7 +16,9 @@ abstract class ViewController<State, Action, View : StateView<State>>(
 
     private var subscription: Job? = null
 
-    protected open fun attach() {}
+    protected open fun onResume() {}
+
+    protected open fun onPause() {}
 
     protected open fun firstViewAttach() {}
 
@@ -41,13 +43,14 @@ abstract class ViewController<State, Action, View : StateView<State>>(
                         view?.renderState(it)
                     }
                 }
-                attach()
+                onResume()
                 if (isFirstAttach) {
                     isFirstAttach = false
                     firstViewAttach()
                 }
             }
             Lifecycle.Event.ON_PAUSE -> {
+                onPause()
                 isAttach = false
                 subscription?.cancel()
             }
