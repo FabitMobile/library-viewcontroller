@@ -16,9 +16,9 @@ abstract class ViewController<State, Action, View : StateView<State>>(
 
     private var subscription: Job? = null
 
-    protected fun attach() {}
+    protected open fun attach() {}
 
-    protected fun firstViewAttach() {}
+    protected open fun firstViewAttach() {}
 
     fun setArguments(mapArgument: Map<String, Any?>) {
         mapArgument.forEach {entry ->
