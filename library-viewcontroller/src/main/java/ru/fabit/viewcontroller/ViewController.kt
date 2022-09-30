@@ -16,6 +16,10 @@ abstract class ViewController<State, Action, View : StateView<State>>(
 
     private var subscription: Job? = null
 
+    init {
+        store.start()
+    }
+
     protected open fun onResume() {}
 
     protected open fun onPause() {}
